@@ -7,14 +7,14 @@ namespace Evolution
     {
         Random r = new Random();
 
-        const int _minLifeSpan = 1000;
-        const int _maxLifeSpan = 10000;
-        const int _minMaxStep = 100;
-        const int _maxMaxStep = 1000;
-        const int _minEnergy = 1000;
-        const int _maxEnergy = 5000;
-        const int _minFoodRange = 100;
-        const int _maxFoodRange = 2000;
+        const int _minLifeSpan = 10;
+        const int _maxLifeSpan = 100 + 1;
+        const int _minMaxStep = 1;
+        const int _maxMaxStep = 10 + 1;
+        const int _minEnergy = 10;
+        const int _maxEnergy = 50 + 1;
+        const int _minFoodRange = 1;
+        const int _maxFoodRange = 20 + 1;
 
         int _lifeSpan, _maxStep, _energy, _foodRange;
         List<Tuple<float, float>> _dna = new List<Tuple<float, float>>();
@@ -32,20 +32,29 @@ namespace Evolution
 
         public Creature()
         {
-            int randomDivider = GlobalConstants.RandomDivider;
+            float randomDivider = GlobalConstants.RandomDivider;
 
-            _lifeSpan = r.Next(_minLifeSpan, _maxLifeSpan) / randomDivider;
-            _maxStep = r.Next(_minMaxStep, _maxMaxStep) / randomDivider;
-            _energy = r.Next(_minEnergy, _maxEnergy) / randomDivider;
-            _foodRange = r.Next(_minFoodRange, _maxFoodRange) / randomDivider;
-            
+            _lifeSpan = r.Next(_minLifeSpan, _maxLifeSpan);
+            _maxStep = r.Next(_minMaxStep, _maxMaxStep);
+            _energy = r.Next(_minEnergy, _maxEnergy);
+            _foodRange = r.Next(_minFoodRange, _maxFoodRange);
+
             for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Tuple<float, float>(r.Next(0, _maxStep) / randomDivider, r.Next(0, _maxStep) / randomDivider));
-            _position = new Tuple<float, float>(r.Next(0, World.Width), r.Next(0, World.Height));
+            _position = new Tuple<float, float>(r.Next(0, World.Width) / randomDivider, r.Next(0, World.Height) / randomDivider);
         }
 
         public Creature(Tuple<float, float> position) : this()
         {
             _position = position;
+        }
+
+        public void Live(Food food, int index)
+        {
+            if(!Dead)
+            {
+                _energy += food.Nutrient;
+                if (index < _dna.Count) _position = new Tuple<float, float>(_position.Item1 + _dna[index].Item1, _position.Item2 + _dna[index].Item2);
+            }
         }
     }
 }

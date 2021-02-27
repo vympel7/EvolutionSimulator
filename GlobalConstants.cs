@@ -2,6 +2,6 @@
 {
     static class GlobalConstants
     {
-        public const int RandomDivider = 100;
+        public const float RandomDivider = 10;
     }
 }

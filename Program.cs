@@ -7,9 +7,8 @@ namespace Evolution
     {
         static void Main()
         {
-            List<Creature> cs = new List<Creature>();
-
-            for (int i = 0; i < 100; i++) cs.Add(new Creature());
+            Simulation sim = new Simulation();
+            sim.Simulate();
         }
     }
 }
