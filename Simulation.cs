@@ -35,7 +35,7 @@ namespace Evolution
             {
                 ordered[i].Item1.Live(ordered[i].Item2, dnaIndex);
                 dnaIndex++;
-            }            
+            }
         }
 
         List<Tuple<Creature, Food>> FoodClosenessOrder()
@@ -44,27 +44,28 @@ namespace Evolution
             
             for (int i = 0; i < _creatures.Count; i++)
             {
-                Food closest = _foodList[0];
-                double distance = -1;
+                int closestIndex = -1;
+                float distance = -1;
                 Tuple<Creature, Food> creatureFood;
 
                 for (int j = 0; j < _foodList.Count; j++)
                 {
-                    double tDistance = Math.Sqrt(
-                        Math.Pow(
-                            Math.Abs(_creatures[i].Position.Item1 - _foodList[j].Position.Item1), 2) +
-                        Math.Pow(
-                            Math.Abs(_creatures[i].Position.Item2 - _foodList[j].Position.Item2), 2));
+                    float tDistance = _creatures[i].Position.Manhattan(_foodList[j].Position);
                     if ((distance == -1 || tDistance < distance) && tDistance <= _creatures[i].FoodRange)
                     {
                         distance = tDistance;
-                        closest = _foodList[j];
-                        _foodList.RemoveAt(j);
+                        closestIndex = j;
                     }
                 }
-                
-                creatureFood = new Tuple<Creature, Food>(_creatures[i], closest);
-                order.Add(creatureFood);
+
+                if (closestIndex != -1)
+                {
+                    Food closestFood = _foodList[closestIndex];
+                    _foodList.RemoveAt(closestIndex);
+
+                    creatureFood = new Tuple<Creature, Food>(_creatures[i], closestFood);
+                    order.Add(creatureFood);
+                }
             }
 
             return order;
