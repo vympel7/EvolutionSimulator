@@ -9,9 +9,11 @@ namespace Evolution
 
         const int _minCreatures = 10;
         const int _maxCreatures = 100 + 1;
+        const int _minEpochDuration = 50;
+        const int _maxEpochDuration = 150 + 1;
 
         List<Creature> _creatures;
-        List<Food> _foodList;
+        List<Food> _foodList = World.FoodList;
 
         public List<Creature> Creatures { get { return _creatures; } }
         public List<Food> FoodList { get { return _foodList; } }
@@ -19,56 +21,54 @@ namespace Evolution
 
         public Simulation()
         {
-            _creatures = new List<Creature>(r.Next(_minCreatures, _maxCreatures));
-            _foodList = World.FoodList;
+            int nCreatures = r.Next(_minCreatures, _maxCreatures);
+            _creatures = new List<Creature>(nCreatures);
 
             for (int i = 0; i < _creatures.Capacity; i++) _creatures.Add(new Creature());
             for (int i = 0; i < _foodList.Capacity; i++) _foodList.Add(new Food());
+
+            Console.WriteLine($"World width: {World.Width}\nWorld height: {World.Height}");
+            Console.WriteLine($"Number of creatures: {nCreatures}");
         }
 
-        public void Simulate()
+        public void Simulate(int epochs, int epochDuration = -1, bool debug = false)
         {
-            int dnaIndex = 0;
-            List<Tuple<Creature, Food>> ordered = FoodClosenessOrder();
+            epochDuration = epochDuration == -1 ? r.Next(_minEpochDuration, _maxEpochDuration) : epochDuration;
 
-            for (int i = 0; i < ordered.Count; i++)
+            for (int e = 0; e < epochs; e++)
             {
-                ordered[i].Item1.Live(ordered[i].Item2, dnaIndex);
-                dnaIndex++;
+                Console.WriteLine(new string('-', 50));
+                DebugInfo("\nBefore generation", debug);
+                
+                Console.WriteLine($"\nExecuting Generation {e+1}...\n");
+
+                Generation generation = new Generation(_creatures, _foodList, epochDuration);
+
+                generation.Execute();
+
+                _creatures = generation.Creatures;
+                _foodList = generation.FoodList;
+
+                DebugInfo("After generation", debug);
+                Console.WriteLine(new string('-', 50));
+                Console.WriteLine();
             }
         }
 
-        List<Tuple<Creature, Food>> FoodClosenessOrder()
+        void DebugInfo(string message, bool debug)
         {
-            List<Tuple<Creature, Food>> order = new List<Tuple<Creature, Food>>();
-            
-            for (int i = 0; i < _creatures.Count; i++)
+            Console.WriteLine(message);
+            if (debug)
             {
-                int closestIndex = -1;
-                float distance = -1;
-                Tuple<Creature, Food> creatureFood;
-
-                for (int j = 0; j < _foodList.Count; j++)
+                Console.WriteLine($"Alive: {_creatures.Count}");
+                for (int i = 0; i < _creatures.Count; i++)
                 {
-                    float tDistance = _creatures[i].Position.Manhattan(_foodList[j].Position);
-                    if ((distance == -1 || tDistance < distance) && tDistance <= _creatures[i].FoodRange)
-                    {
-                        distance = tDistance;
-                        closestIndex = j;
-                    }
-                }
-
-                if (closestIndex != -1)
-                {
-                    Food closestFood = _foodList[closestIndex];
-                    _foodList.RemoveAt(closestIndex);
-
-                    creatureFood = new Tuple<Creature, Food>(_creatures[i], closestFood);
-                    order.Add(creatureFood);
+                    Console.WriteLine($"\nIndex {i}");
+                    Console.WriteLine($"Position: {_creatures[i].Position}");
+                    Console.WriteLine($"Energy: {_creatures[i].Energy}");
+                    Console.WriteLine($"Lifespan: {_creatures[i].LifeSpan}\n");
                 }
             }
-
-            return order;
         }
     }
 }

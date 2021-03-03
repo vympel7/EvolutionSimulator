@@ -8,7 +8,7 @@ namespace Evolution
         static void Main()
         {
             Simulation sim = new Simulation();
-            sim.Simulate();
+            sim.Simulate(3, 50, true);
         }
     }
 }

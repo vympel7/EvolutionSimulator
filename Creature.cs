@@ -27,7 +27,7 @@ namespace Evolution
         public List<Point> Dna { get { return _dna; } }
         public Point Position { get { return _position; } }
 
-        public bool Dead { get { return _energy == 0 || _lifeSpan == 0; } }
+        public bool Dead { get { return _energy <= 0 || _lifeSpan == 0; } }
 
 
         public Creature()
@@ -39,22 +39,31 @@ namespace Evolution
             _energy = r.Next(_minEnergy, _maxEnergy);
             _foodRange = r.Next(_minFoodRange, _maxFoodRange);
 
-            for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Point(r.Next(0, _maxStep) / randomDivider, r.Next(0, _maxStep) / randomDivider));
+            for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Point(r.Next(-_maxStep, _maxStep) / randomDivider, r.Next(-_maxStep, _maxStep) / randomDivider));
             _position = new Point(r.Next(0, World.Width) / randomDivider, r.Next(0, World.Height) / randomDivider);
         }
 
-        public Creature(Point position) : this()
+        public void Eat(Food food)
         {
-            _position = position;
+            _energy += food.Nutrient;
         }
 
-        public void Live(Food food, int index)
+        public void Move(int index)
         {
-            if(!Dead)
-            {
-                _energy += food.Nutrient;
-                if (index < _dna.Count) _position.Add(_dna[index]);
-            }
+            _position.Add(_dna[index]);
+            BendAround();
+            _energy -= (int) Math.Abs(_dna[index].X + _dna[index].Y);
+            _lifeSpan--;
+        }
+
+        void BendAround()
+        {
+            float xOffset = Math.Abs(_position.X - World.Width);
+            float yOffset = Math.Abs(_position.Y - World.Height);
+            if (_position.X > World.Width) _position.X = xOffset;
+            else if (_position.X < World.Width) _position.X = World.Width - xOffset;
+            if (_position.Y > World.Height) _position.Y = yOffset;
+            else if (_position.Y < World.Height) _position.Y = World.Height- yOffset;
         }
     }
 }
