@@ -5,8 +5,6 @@ namespace Evolution
 {
     class Creature
     {
-        Random r = new Random();
-
         const int _minLifeSpan = 10;
         const int _maxLifeSpan = 100 + 1;
         const int _minMaxStep = 1;
@@ -32,15 +30,15 @@ namespace Evolution
 
         public Creature()
         {
-            float randomDivider = GlobalConstants.RandomDivider;
+            float randomDivider = Useful.Divider;
 
-            _lifeSpan = r.Next(_minLifeSpan, _maxLifeSpan);
-            _maxStep = r.Next(_minMaxStep, _maxMaxStep);
-            _energy = r.Next(_minEnergy, _maxEnergy);
-            _foodRange = r.Next(_minFoodRange, _maxFoodRange);
+            _lifeSpan = Useful.r.Next(_minLifeSpan, _maxLifeSpan);
+            _maxStep = Useful.r.Next(_minMaxStep, _maxMaxStep);
+            _energy = Useful.r.Next(_minEnergy, _maxEnergy);
+            _foodRange = Useful.r.Next(_minFoodRange, _maxFoodRange);
 
-            for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Point(r.Next(-_maxStep, _maxStep) / randomDivider, r.Next(-_maxStep, _maxStep) / randomDivider));
-            _position = new Point(r.Next(0, World.Width) / randomDivider, r.Next(0, World.Height) / randomDivider);
+            for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Point(Useful.r.Next(-_maxStep, _maxStep) / randomDivider, Useful.r.Next(-_maxStep, _maxStep) / randomDivider));
+            _position = new Point(Useful.r.Next(0, World.Width) / randomDivider, Useful.r.Next(0, World.Height) / randomDivider);
         }
 
         public void Eat(Food food)
@@ -58,12 +56,13 @@ namespace Evolution
 
         void BendAround()
         {
-            float xOffset = Math.Abs(_position.X - World.Width);
-            float yOffset = Math.Abs(_position.Y - World.Height);
-            if (_position.X > World.Width) _position.X = xOffset;
-            else if (_position.X < World.Width) _position.X = World.Width - xOffset;
-            if (_position.Y > World.Height) _position.Y = yOffset;
-            else if (_position.Y < World.Height) _position.Y = World.Height- yOffset;
+            float xOffset = _position.X - World.Width;
+            float yOffset = _position.Y - World.Height;
+            if (xOffset > 0) _position.X = xOffset;
+            else if (xOffset < -World.Width) _position.X = World.Width - (xOffset + World.Width);
+            if (xOffset > 0) _position.Y = yOffset;
+            else if (yOffset < -World.Height) _position.Y = World.Height - (yOffset + World.Height);
+
         }
     }
 }
