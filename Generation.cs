@@ -5,9 +5,9 @@ namespace Evolution
 {
     class Generation
     {
+        int _epochDuration;
         List<Creature> _creatures;
         List<Food> _foodList;
-        int _epochDuration;
 
         public List<Creature> Creatures { get { return _creatures; } }
         public List<Food> FoodList { get { return _foodList; } }
@@ -47,21 +47,21 @@ namespace Evolution
 
             for (int i = 0; i < _creatures.Count; i++)
             {
-                int closestIndex = -1;
-                float distance = -1;
+                int closestIndex = Useful.Invalid;
+                float distance = Useful.Invalid;
                 Tuple<Creature, Food> creatureFood;
 
                 for (int j = 0; j < _foodList.Count; j++)
                 {
                     float tDistance = _creatures[i].Position.Manhattan(_foodList[j].Position);
-                    if ((distance == -1 || tDistance < distance) && tDistance <= _creatures[i].FoodRange)
+                    if ((distance == Useful.Invalid || tDistance < distance) && tDistance <= _creatures[i].FoodRange)
                     {
                         distance = tDistance;
                         closestIndex = j;
                     }
                 }
 
-                if (closestIndex != -1)
+                if (closestIndex != Useful.Invalid)
                 {
                     Food closestFood = _foodList[closestIndex];
                     _foodList.RemoveAt(closestIndex);

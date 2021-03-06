@@ -4,10 +4,8 @@ namespace Evolution
 {
     class Food
     {
-        Random r = new Random();
-
-        const int MinNutrient = 5;
-        const int MaxNutrient = 25 + 1;
+        const int _minNutrient = 5;
+        const int _maxNutrient = 25 + 1;
 
         int _nutrient;
         Point _position;
@@ -17,8 +15,8 @@ namespace Evolution
 
         public Food()
         {
-            _nutrient = r.Next(MinNutrient, MaxNutrient);
-            _position = new Point(r.Next(0, World.Width) / GlobalConstants.RandomDivider, r.Next(0, World.Height) / GlobalConstants.RandomDivider);
+            _nutrient = Useful.r.Next(_minNutrient, _maxNutrient);
+            _position = new Point(Useful.r.Next(0, World.Width) / Useful.Divider, Useful.r.Next(0, World.Height) / Useful.Divider);
         }
     }
 }
