@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Evolution
+﻿namespace Evolution
 {
     class Food
     {
@@ -16,7 +14,7 @@ namespace Evolution
         public Food()
         {
             _nutrient = Useful.r.Next(_minNutrient, _maxNutrient);
-            _position = new Point(Useful.r.Next(0, World.Width) / Useful.Divider, Useful.r.Next(0, World.Height) / Useful.Divider);
+            _position = new Point();
         }
     }
 }

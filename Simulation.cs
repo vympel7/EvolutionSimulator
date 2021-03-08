@@ -20,7 +20,7 @@ namespace Evolution
 
         public Simulation(int nCreatures = Useful.Invalid)
         {
-            _creatures = new List<Creature>(nCreatures == Useful.Invalid ? Useful.r.Next(_minCreatures, _maxCreatures) : Useful.Clamp(nCreatures, _minCreatures, _maxCreatures));
+            _creatures = new List<Creature>(nCreatures == Useful.Invalid ? Useful.r.Next(_minCreatures, _maxCreatures) : (int)Useful.Clamp(nCreatures, _minCreatures, _maxCreatures));
 
             for (int i = 0; i < _creatures.Capacity; i++) _creatures.Add(new Creature());
             for (int i = 0; i < _foodList.Capacity; i++) _foodList.Add(new Food());
@@ -31,14 +31,14 @@ namespace Evolution
 
         public void Simulate(int epochs, int epochDuration = Useful.Invalid, bool debug = false)
         {
-            _epochDuration = epochDuration == Useful.Invalid ? Useful.r.Next(_minEpochDuration, _maxEpochDuration) : Useful.Clamp(epochDuration, _minEpochDuration, _maxEpochDuration);
+            _epochDuration = epochDuration == Useful.Invalid ? Useful.r.Next(_minEpochDuration, _maxEpochDuration) : (int)Useful.Clamp(epochDuration, _minEpochDuration, _maxEpochDuration);
 
             for (int e = 0; e < epochs; e++)
             {
                 Console.WriteLine(new string('-', 50));
                 DebugInfo("\nBefore generation", debug);
-                
-                Console.WriteLine($"\nExecuting Generation {e+1}...\n");
+
+                Console.WriteLine($"\nExecuting Generation {e + 1}...\n");
 
                 Generation generation = new Generation(_creatures, _foodList, _epochDuration);
 
@@ -62,9 +62,7 @@ namespace Evolution
                 for (int i = 0; i < _creatures.Count; i++)
                 {
                     Console.WriteLine($"\nIndex {i}");
-                    Console.WriteLine($"Position: {_creatures[i].Position}");
-                    Console.WriteLine($"Energy: {_creatures[i].Energy}");
-                    Console.WriteLine($"Lifespan: {_creatures[i].LifeSpan}\n");
+                    Console.WriteLine(_creatures[i]);
                 }
             }
         }
