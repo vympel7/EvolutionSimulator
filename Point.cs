@@ -12,8 +12,8 @@ namespace Evolution
 
         public Point()
         {
-            _x = Useful.r.Next(0, World.Width * 10) / Useful.Divider;
-            _y = Useful.r.Next(0, World.Height * 10) / Useful.Divider;
+            _x = Useful.Rand.Next(0, World.Width * 10) / Useful.Divider;
+            _y = Useful.Rand.Next(0, World.Height * 10) / Useful.Divider;
         }
 
         public Point(float x, float y)

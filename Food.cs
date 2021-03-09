@@ -13,7 +13,7 @@
 
         public Food()
         {
-            _nutrient = Useful.r.Next(_minNutrient, _maxNutrient);
+            _nutrient = Useful.Rand.Next(_minNutrient, _maxNutrient);
             _position = new Point();
         }
     }

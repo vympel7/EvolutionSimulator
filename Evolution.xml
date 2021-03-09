@@ -6,12 +6,12 @@
     <members>
         <member name="M:Evolution.Useful.Clamp(System.Single,System.Single,System.Single)">
             <summary>
-            Ensures a number is between min (inclusive) and max (exclusive)
+            Ensures a number is between a minimum (inclusive) and a maximum (exclusive) value
             </summary>
             <returns>The number clamped between min and max</returns>
-            <param name="number">The number to clamp between min and max.</param>
-            <param name="min">The minimum value number can have.</param>
-            <param name="max">The maximum value number can have.</param>
+            <param name="number">The number to clamp between min and max</param>
+            <param name="min">The minimum value number can have</param>
+            <param name="max">The maximum value (+1) number can have</param>
         </member>
     </members>
 </doc>

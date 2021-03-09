@@ -20,7 +20,7 @@ namespace Evolution
 
         public Simulation(int nCreatures = Useful.Invalid)
         {
-            _creatures = new List<Creature>(nCreatures == Useful.Invalid ? Useful.r.Next(_minCreatures, _maxCreatures) : (int)Useful.Clamp(nCreatures, _minCreatures, _maxCreatures));
+            _creatures = new List<Creature>(nCreatures == Useful.Invalid ? Useful.Rand.Next(_minCreatures, _maxCreatures) : (int)Useful.Clamp(nCreatures, _minCreatures, _maxCreatures));
 
             for (int i = 0; i < _creatures.Capacity; i++) _creatures.Add(new Creature());
             for (int i = 0; i < _foodList.Capacity; i++) _foodList.Add(new Food());
@@ -31,7 +31,7 @@ namespace Evolution
 
         public void Simulate(int epochs, int epochDuration = Useful.Invalid, bool debug = false)
         {
-            _epochDuration = epochDuration == Useful.Invalid ? Useful.r.Next(_minEpochDuration, _maxEpochDuration) : (int)Useful.Clamp(epochDuration, _minEpochDuration, _maxEpochDuration);
+            _epochDuration = epochDuration == Useful.Invalid ? Useful.Rand.Next(_minEpochDuration, _maxEpochDuration) : (int)Useful.Clamp(epochDuration, _minEpochDuration, _maxEpochDuration);
 
             for (int e = 0; e < epochs; e++)
             {
@@ -47,9 +47,11 @@ namespace Evolution
                 _creatures = generation.Creatures;
                 _foodList = generation.FoodList;
 
-                DebugInfo("After generation", debug);
+                DebugInfo("\nAfter generation", debug);
                 Console.WriteLine(new string('-', 50));
                 Console.WriteLine();
+
+                Console.ReadLine();
             }
         }
 
@@ -59,6 +61,7 @@ namespace Evolution
             if (debug)
             {
                 Console.WriteLine($"Alive: {_creatures.Count}");
+
                 for (int i = 0; i < _creatures.Count; i++)
                 {
                     Console.WriteLine($"\nIndex {i}");

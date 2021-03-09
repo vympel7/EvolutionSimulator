@@ -36,17 +36,17 @@ namespace Evolution
         {
             float randomDivider = Useful.Divider;
 
-            _lifeSpan = Useful.r.Next(_minLifeSpan, _maxLifeSpan);
-            _maxStep = Useful.r.Next(_minMaxStep, _maxMaxStep);
-            _energy = Useful.r.Next(_minEnergy, _maxEnergy);
-            _foodRange = Useful.r.Next(_minFoodRange, _maxFoodRange);
-            _matingRange = Useful.r.Next(_minMatingRange, _maxMatingRange);
+            _lifeSpan = Useful.Rand.Next(_minLifeSpan, _maxLifeSpan);
+            _maxStep = Useful.Rand.Next(_minMaxStep, _maxMaxStep);
+            _energy = Useful.Rand.Next(_minEnergy, _maxEnergy);
+            _foodRange = Useful.Rand.Next(_minFoodRange, _maxFoodRange);
+            _matingRange = Useful.Rand.Next(_minMatingRange, _maxMatingRange);
 
-            for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Point(Useful.r.Next(-_maxStep, _maxStep) / randomDivider, Useful.r.Next(-_maxStep, _maxStep) / randomDivider));
+            for (int _ = 0; _ < _lifeSpan; _++) _dna.Add(new Point(Useful.Rand.Next(-_maxStep, _maxStep) / randomDivider, Useful.Rand.Next(-_maxStep, _maxStep) / randomDivider));
             _position = new Point();
         }
 
-        public Creature(int lifespan, int maxStep, int energy, int foodRange, int matingRange, List<Point> dna) : this()
+        public Creature(int lifespan, int maxStep, int energy, int foodRange, int matingRange, List<Point> dna)
         {
             _lifeSpan = lifespan;
             _maxStep = maxStep;
@@ -54,6 +54,7 @@ namespace Evolution
             _foodRange = foodRange;
             _matingRange = matingRange;
             _dna = dna;
+            _position = new Point();
         }
 
 
@@ -75,7 +76,7 @@ namespace Evolution
             int minX = 0;
             int maxX = 1;
 
-            int x = Useful.r.Next(minX, maxX);
+            int x = Useful.Rand.Next(minX, maxX);
 
             int newLifeSpan = (int)Math.Round(Useful.Lerp(x, minX, maxX, _lifeSpan, other.LifeSpan));
             int newMaxStep = (int)Math.Round(Useful.Lerp(x, minX, maxX, _maxStep, other.MaxStep));
@@ -90,7 +91,7 @@ namespace Evolution
                 float dnaY = Useful.Lerp(x, minX, maxX, _dna[i].Y, other.Dna[i].Y);
                 newDna.Add(new Point(dnaX, dnaY));
             }
-            for (int i = 0; i < newLifeSpan - _lifeSpan; i++) newDna.Add(new Point(Useful.r.Next(-_maxStep, _maxStep) / Useful.Divider, Useful.r.Next(-_maxStep, _maxStep) / Useful.Divider));
+            for (int i = 0; i < newLifeSpan - _lifeSpan; i++) newDna.Add(new Point(Useful.Rand.Next(-newMaxStep, newMaxStep) / Useful.Divider, Useful.Rand.Next(-newMaxStep, newMaxStep) / Useful.Divider));
 
 
             Creature newBorn = new Creature(newLifeSpan, newMaxStep, newEnergy, newFoodRange, newMatingRange, newDna);
