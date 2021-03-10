@@ -10,8 +10,19 @@
             </summary>
             <returns>The number clamped between min and max</returns>
             <param name="number">The number to clamp between min and max</param>
-            <param name="min">The minimum value number can have</param>
-            <param name="max">The maximum value (+1) number can have</param>
+            <param name="min">The minimum value (inclusive) number can have</param>
+            <param name="max">The maximum value (exclusive) number can have</param>
+        </member>
+        <member name="M:Evolution.Useful.Map(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Maps a value from a range to another
+            </summary>
+            <returns>A properly mapped value between a and b</returns>
+            <param name="x">The control variable that is used to adjust the outcome</param>
+            <param name="minC">The minimum value (inclusive) of the control variable</param>
+            <param name="maxC">The maximum value (inclusive) of the control variable</param>
+            <param name="a">The number bound to minC</param>
+            <param name="b">The number bound to maxC</param>
         </member>
     </members>
 </doc>

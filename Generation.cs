@@ -20,6 +20,9 @@ namespace Evolution
             _epochDuration = epochDuration;
         }
 
+        /// <summary>
+        /// Executes a generation
+        /// </summary>
         public void Execute()
         {
             for (int index = 0; index < _epochDuration; index++)

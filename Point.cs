@@ -22,12 +22,21 @@ namespace Evolution
             _y = Useful.Clamp(y, 0, World.Height);
         }
 
+        /// <summary>
+        /// Makes an element wise addition of this instance's coordinates and the parameter's
+        /// </summary>
+        /// <param name="other">The Point to take the coordinates from</param>
         public void Add(Point other)
         {
             _x += other.X;
             _y += other.Y;
         }
 
+        /// <summary>
+        /// Evaluates a manhattan distance between this instance's coordinates and the parameter's
+        /// </summary>
+        /// <param name="other">The Point to take the coordinates from</param>
+        /// <returns>The manhattan distance of the coordinates</returns>
         public float Manhattan(Point other)
         {
             return (float)Math.Sqrt(Math.Pow(Math.Abs(_x - other.X), 2) + Math.Pow(Math.Abs(_y - other.Y), 2));
@@ -35,8 +44,7 @@ namespace Evolution
 
         public override string ToString()
         {
-            string print = $"({_x}, {_y})";
-            return print;
+            return $"({_x}, {_y})";
         }
     }
 }

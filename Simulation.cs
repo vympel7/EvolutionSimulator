@@ -29,6 +29,12 @@ namespace Evolution
             Console.WriteLine($"Number of creatures: {_creatures.Capacity}");
         }
 
+        /// <summary>
+        /// Executes all the generations
+        /// </summary>
+        /// <param name="epochs">How many generations will be executed</param>
+        /// <param name="epochDuration">How long will a generation last (in lifespan creature units)</param>
+        /// <param name="debug">Show or not the debug information</param>
         public void Simulate(int epochs, int epochDuration = Useful.Invalid, bool debug = false)
         {
             _epochDuration = epochDuration == Useful.Invalid ? Useful.Rand.Next(_minEpochDuration, _maxEpochDuration) : (int)Useful.Clamp(epochDuration, _minEpochDuration, _maxEpochDuration);

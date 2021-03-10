@@ -63,6 +63,10 @@ namespace Evolution
             _energy += food.Nutrient;
         }
 
+        /// <summary>
+        /// Adds to this instance's Position the Point at parameter index in this instance's Dna
+        /// </summary>
+        /// <param name="index">The index of dna to retrieve the Point from</param>
         public void Move(int index)
         {
             _position.Add(_dna[index]);
@@ -71,41 +75,35 @@ namespace Evolution
             _lifeSpan--;
         }
 
+        /// <summary>
+        /// Creates a new Creature with data from this instance's values and the parameter's
+        /// </summary>
+        /// <param name="other">The Creature to take data from</param>
+        /// <returns>The new creature result of the process</returns>
         public Creature Mate(Creature other)
         {
             int minX = 0;
             int maxX = 1;
 
-            int x = Useful.Rand.Next(minX, maxX);
+            float x = Useful.Rand.Next(minX, maxX * 10) / Useful.Divider;
 
-            int newLifeSpan = (int)Math.Round(Useful.Lerp(x, minX, maxX, _lifeSpan, other.LifeSpan));
-            int newMaxStep = (int)Math.Round(Useful.Lerp(x, minX, maxX, _maxStep, other.MaxStep));
-            int newEnergy = (int)Math.Round(Useful.Lerp(x, minX, maxX, _energy, other.Energy));
-            int newFoodRange = (int)Math.Round(Useful.Lerp(x, minX, maxX, _foodRange, other.FoodRange));
-            int newMatingRange = (int)Math.Round(Useful.Lerp(x, minX, maxX, _matingRange, other.MatingRange));
+            int newLifeSpan = (int)Math.Round(Useful.Map(x, minX, maxX, _lifeSpan, other.LifeSpan));
+            int newMaxStep = (int)Math.Round(Useful.Map(x, minX, maxX, _maxStep, other.MaxStep));
+            int newEnergy = (int)Math.Round(Useful.Map(x, minX, maxX, _energy, other.Energy));
+            int newFoodRange = (int)Math.Round(Useful.Map(x, minX, maxX, _foodRange, other.FoodRange));
+            int newMatingRange = (int)Math.Round(Useful.Map(x, minX, maxX, _matingRange, other.MatingRange));
 
             List<Point> newDna = new List<Point>(newLifeSpan);
             for (int i = 0; i < _lifeSpan; i++)
             {
-                float dnaX = Useful.Lerp(x, minX, maxX, _dna[i].X, other.Dna[i].X);
-                float dnaY = Useful.Lerp(x, minX, maxX, _dna[i].Y, other.Dna[i].Y);
+                float dnaX = Useful.Map(x, minX, maxX, _dna[i].X, other.Dna[i].X);
+                float dnaY = Useful.Map(x, minX, maxX, _dna[i].Y, other.Dna[i].Y);
                 newDna.Add(new Point(dnaX, dnaY));
             }
             for (int i = 0; i < newLifeSpan - _lifeSpan; i++) newDna.Add(new Point(Useful.Rand.Next(-newMaxStep, newMaxStep) / Useful.Divider, Useful.Rand.Next(-newMaxStep, newMaxStep) / Useful.Divider));
 
 
             Creature newBorn = new Creature(newLifeSpan, newMaxStep, newEnergy, newFoodRange, newMatingRange, newDna);
-            /*
-             * random between -1 and 1 (-10 and 10 divided)
-             * 0 get from this creature
-             * 1 get from other creature
-             * 0.5 get average from both
-             * 
-             * 0 -> 0.5 average but more similar to this
-             * 0.5 -> 1 average but more similar to other
-             * 
-             * 0 <= x <= 1
-             */
             return newBorn;
         }
 
